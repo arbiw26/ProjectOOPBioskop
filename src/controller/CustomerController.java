@@ -4,6 +4,7 @@
  */
 package controller;
 import dao.CustomerDAOImpl;
+import dao.DaoInterface;
 import java.util.ArrayList;
 import model.Customer;
 
@@ -12,7 +13,7 @@ import model.Customer;
  * @author Arbi Wiratama
  */
 public class CustomerController {
-    private CustomerDAOImpl customerDAO;
+    private DaoInterface customerDAO;
 
     public CustomerController() {
         customerDAO = new CustomerDAOImpl();

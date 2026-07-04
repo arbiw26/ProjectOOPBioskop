@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controller;
+import dao.DaoInterface;
 import dao.StudioDAOImpl;
 import java.util.ArrayList;
 import model.Studio;
@@ -12,7 +13,7 @@ import model.Studio;
  * @author Arbi Wiratama
  */
 public class StudioController {
-    private StudioDAOImpl studioDAO;
+    private DaoInterface studioDAO;
 
     public StudioController() {
         studioDAO = new StudioDAOImpl();

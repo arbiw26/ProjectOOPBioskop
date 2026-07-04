@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controller;
+import dao.DaoInterface;
 import dao.MovieDAOImpl;
 import java.util.ArrayList;
 import model.Movie;
@@ -12,7 +13,7 @@ import model.Movie;
  * @author Arbi Wiratama
  */
 public class MovieController {
-    private MovieDAOImpl movieDAO;
+    private DaoInterface movieDAO;
 
     public MovieController() {
         movieDAO = new MovieDAOImpl();

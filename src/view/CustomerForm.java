@@ -156,7 +156,7 @@ public class CustomerForm extends javax.swing.JFrame {
         jButtonSave.setText("Simpan");
         jButtonSave.addActionListener(this::jButtonSaveActionPerformed);
 
-        jComboBoxMember.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Reguler", "Member", " " }));
+        jComboBoxMember.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Reguler", "Member" }));
 
         jLabel5.setText("Membership");
 
