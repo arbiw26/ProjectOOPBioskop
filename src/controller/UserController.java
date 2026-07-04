@@ -77,7 +77,9 @@ public class UserController {
 
     }
 
-    public void resetPassword(String email, String newPassword) throws Exception {
+        public void resetPassword(String email,
+                          String newPassword,
+                          String confirmPassword) throws Exception {
 
         if (email.trim().isEmpty()) {
             throw new Exception("Email cannot be empty!");
@@ -85,6 +87,14 @@ public class UserController {
 
         if (newPassword.trim().isEmpty()) {
             throw new Exception("New password cannot be empty!");
+        }
+
+        if (confirmPassword.trim().isEmpty()) {
+            throw new Exception("Confirm password cannot be empty!");
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new Exception("Password confirmation does not match!");
         }
 
         User user = userDAO.findByEmail(email);
@@ -100,6 +110,5 @@ public class UserController {
         if (userDAO.update(user) == 0) {
             throw new Exception("Failed to update password!");
         }
-
     }
 }

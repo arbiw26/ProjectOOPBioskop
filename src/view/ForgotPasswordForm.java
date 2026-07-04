@@ -54,6 +54,7 @@ public class ForgotPasswordForm extends javax.swing.JFrame {
         jButtonResetPass = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jPasswordFieldConPass = new javax.swing.JPasswordField();
+        jButtonRegister = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,7 +68,7 @@ public class ForgotPasswordForm extends javax.swing.JFrame {
 
         jPanelPoster.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/BackgroundLogin.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/PosterBioskop.jpeg"))); // NOI18N
         jLabel1.setText("jLabel1");
         jPanelPoster.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-150, -280, 540, 990));
 
@@ -126,6 +127,15 @@ public class ForgotPasswordForm extends javax.swing.JFrame {
         jPasswordFieldConPass.setBackground(new java.awt.Color(204, 204, 204));
         jPasswordFieldConPass.addActionListener(this::jPasswordFieldConPassActionPerformed);
 
+        jButtonRegister.setBackground(new java.awt.Color(25, 25, 25));
+        jButtonRegister.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButtonRegister.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonRegister.setText("Back");
+        jButtonRegister.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 51, 51)));
+        jButtonRegister.setContentAreaFilled(false);
+        jButtonRegister.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButtonRegister.addActionListener(this::jButtonRegisterActionPerformed);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -140,24 +150,28 @@ public class ForgotPasswordForm extends javax.swing.JFrame {
                             .addComponent(jCheckBoxShowPass)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel5)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel9)
-                                        .addComponent(jLabel8)
-                                        .addComponent(jLabel6))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jPasswordFieldConPass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
-                                        .addComponent(jPasswordFieldPass)
-                                        .addComponent(jTextFieldEmail)))
                                 .addComponent(jLabel4)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButtonRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel6))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jPasswordFieldConPass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+                                            .addComponent(jPasswordFieldPass)
+                                            .addComponent(jTextFieldEmail))))))))
                 .addGap(28, 28, 28))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
+                .addContainerGap()
+                .addComponent(jButtonRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
@@ -207,18 +221,21 @@ public class ForgotPasswordForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordFieldPassActionPerformed
 
     private void jCheckBoxShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxShowPassActionPerformed
-        if (jCheckBoxShowPass.isSelected()) {
-            jPasswordFieldPass.setEchoChar((char) 0);
-        } else {
-            jPasswordFieldPass.setEchoChar('*');
-        }
+        char echo = jCheckBoxShowPass.isSelected()
+            ? (char) 0
+            : '*';
+
+        jPasswordFieldPass.setEchoChar(echo);
+        jPasswordFieldConPass.setEchoChar(echo);
     }//GEN-LAST:event_jCheckBoxShowPassActionPerformed
 
     private void jButtonResetPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResetPassActionPerformed
         try {
+
             controller.resetPassword(
                     jTextFieldEmail.getText(),
-                    String.valueOf(jPasswordFieldPass.getPassword())
+                    String.valueOf(jPasswordFieldPass.getPassword()),
+                    String.valueOf(jPasswordFieldConPass.getPassword())
             );
 
             JOptionPane.showMessageDialog(
@@ -244,6 +261,11 @@ public class ForgotPasswordForm extends javax.swing.JFrame {
     private void jPasswordFieldConPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldConPassActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordFieldConPassActionPerformed
+
+    private void jButtonRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterActionPerformed
+        new LoginForm().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButtonRegisterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,6 +293,7 @@ public class ForgotPasswordForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonRegister;
     private javax.swing.JButton jButtonResetPass;
     private javax.swing.JCheckBox jCheckBoxShowPass;
     private javax.swing.JLabel jLabel1;

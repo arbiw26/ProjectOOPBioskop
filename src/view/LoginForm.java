@@ -68,9 +68,9 @@ public class LoginForm extends javax.swing.JFrame {
 
         jPanelPoster.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/BackgroundLogin.jpeg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/PosterFilm.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
-        jPanelPoster.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-150, -280, 540, 990));
+        jPanelPoster.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-190, -430, 720, 1070));
 
         jPanelCard.add(jPanelPoster, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 390, 560));
 
