@@ -283,35 +283,53 @@ public class RegisterForm extends javax.swing.JFrame {
 
     private void jButtonSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignUpActionPerformed
         try {
+            
+            String password = String.valueOf(jPasswordFieldPass.getPassword());
+            String confirmPassword = String.valueOf(jPasswordFieldConPass.getPassword());
 
-            User user = controller.login(
-                jTextFieldLastName.getText(),
-                String.valueOf(jPasswordFieldPass.getPassword())
-            );
+            if (!password.equals(confirmPassword)) {
+                throw new Exception("Password confirmation does not match!");
+            }
 
-            JOptionPane.showMessageDialog(this,
-                "Welcome, " + user.getFirstName());
+            User user = new User();
 
-            new DashboardForm().setVisible(true);
-            dispose();
+            user.setFirstName(jTextFieldFirstName.getText().trim());
+            user.setLastName(jTextFieldLastName.getText().trim());
+            user.setEmail(jTextFieldEmail.getText().trim());
+            user.setCountry(jTextFieldCountry.getText().trim());
+            user.setPassword(password);
 
-        } catch (Exception e) {
+            controller.register(user);
 
             JOptionPane.showMessageDialog(
-                this,
-                e.getMessage(),
-                "Login Failed",
-                JOptionPane.ERROR_MESSAGE
+                    this,
+                    "Registration successful!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE
             );
 
+            new LoginForm().setVisible(true);
+            dispose();
+
+        } catch (Exception ex) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    ex.getMessage(),
+                    "Register Failed",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            
         }
     }//GEN-LAST:event_jButtonSignUpActionPerformed
 
     private void jCheckBoxShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxShowPassActionPerformed
         if (jCheckBoxShowPass.isSelected()) {
             jPasswordFieldPass.setEchoChar((char) 0);
+            jPasswordFieldConPass.setEchoChar((char) 0);
         } else {
             jPasswordFieldPass.setEchoChar('*');
+            jPasswordFieldConPass.setEchoChar('*');
         }
     }//GEN-LAST:event_jCheckBoxShowPassActionPerformed
 
@@ -324,7 +342,8 @@ public class RegisterForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldLastNameActionPerformed
 
     private void jButtonRegisterSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterSignInActionPerformed
-
+        new LoginForm().setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButtonRegisterSignInActionPerformed
 
     private void jTextFieldFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldFirstNameActionPerformed
