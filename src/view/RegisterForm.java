@@ -24,7 +24,7 @@ public class RegisterForm extends javax.swing.JFrame {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         controller = new UserController();
-        getRootPane().setDefaultButton(jButtonLogin);
+        getRootPane().setDefaultButton(jButtonSignUp);
     }
 
     /**
@@ -44,7 +44,7 @@ public class RegisterForm extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jButtonRegister = new javax.swing.JButton();
+        jButtonSignIn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -53,8 +53,15 @@ public class RegisterForm extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jPasswordFieldPass = new javax.swing.JPasswordField();
         jCheckBoxShowPass = new javax.swing.JCheckBox();
-        jLabelForgetPass = new javax.swing.JLabel();
-        jButtonLogin = new javax.swing.JButton();
+        jButtonSignUp = new javax.swing.JButton();
+        jTextFieldCountry = new javax.swing.JTextField();
+        jTextFieldLastName = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jTextFieldFirstName = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jPasswordFieldConfirmPass = new javax.swing.JPasswordField();
+        jLabel11 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,25 +89,25 @@ public class RegisterForm extends javax.swing.JFrame {
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Don't have account?");
+        jLabel3.setText("Already have an account?");
 
-        jButtonRegister.setBackground(new java.awt.Color(25, 25, 25));
-        jButtonRegister.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButtonRegister.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonRegister.setText("Sign Up");
-        jButtonRegister.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 51, 51)));
-        jButtonRegister.setContentAreaFilled(false);
-        jButtonRegister.addActionListener(this::jButtonRegisterActionPerformed);
+        jButtonSignIn.setBackground(new java.awt.Color(25, 25, 25));
+        jButtonSignIn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButtonSignIn.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonSignIn.setText("Sign in");
+        jButtonSignIn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 51, 51)));
+        jButtonSignIn.setContentAreaFilled(false);
+        jButtonSignIn.addActionListener(this::jButtonSignInActionPerformed);
 
         jLabel4.setBackground(new java.awt.Color(255, 255, 255));
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 28)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Welcome Back");
+        jLabel4.setText("Welcome");
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Sign in to continue");
+        jLabel5.setText("Sign up to continue");
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/video-player (1).png"))); // NOI18N
 
@@ -125,17 +132,46 @@ public class RegisterForm extends javax.swing.JFrame {
         jCheckBoxShowPass.setText("Show Password");
         jCheckBoxShowPass.addActionListener(this::jCheckBoxShowPassActionPerformed);
 
-        jLabelForgetPass.setBackground(new java.awt.Color(255, 255, 255));
-        jLabelForgetPass.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelForgetPass.setText("Forget Password?");
+        jButtonSignUp.setBackground(new java.awt.Color(255, 51, 51));
+        jButtonSignUp.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonSignUp.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonSignUp.setText("Sign up");
+        jButtonSignUp.addActionListener(this::jButtonSignUpActionPerformed);
 
-        jButtonLogin.setBackground(new java.awt.Color(255, 51, 51));
-        jButtonLogin.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButtonLogin.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonLogin.setText("Sign in");
-        jButtonLogin.setBorderPainted(false);
-        jButtonLogin.setContentAreaFilled(false);
-        jButtonLogin.addActionListener(this::jButtonLoginActionPerformed);
+        jTextFieldCountry.setBackground(new java.awt.Color(204, 204, 204));
+        jTextFieldCountry.setBorder(null);
+        jTextFieldCountry.addActionListener(this::jTextFieldCountryActionPerformed);
+
+        jTextFieldLastName.setBackground(new java.awt.Color(204, 204, 204));
+        jTextFieldLastName.setBorder(null);
+        jTextFieldLastName.addActionListener(this::jTextFieldLastNameActionPerformed);
+
+        jLabel7.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Country");
+
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Last Name");
+
+        jTextFieldFirstName.setBackground(new java.awt.Color(204, 204, 204));
+        jTextFieldFirstName.setBorder(null);
+        jTextFieldFirstName.addActionListener(this::jTextFieldFirstNameActionPerformed);
+
+        jLabel10.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("First Name");
+
+        jPasswordFieldConfirmPass.setBackground(new java.awt.Color(204, 204, 204));
+        jPasswordFieldConfirmPass.addActionListener(this::jPasswordFieldConfirmPassActionPerformed);
+
+        jLabel11.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Confirm Password");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -145,49 +181,75 @@ public class RegisterForm extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel8))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jPasswordFieldPass, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
-                                    .addComponent(jTextFieldEmail)))
-                            .addComponent(jButtonLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel7)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel10))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(jLabel11)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPasswordFieldConfirmPass, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jPasswordFieldPass, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldEmail)
+                                    .addComponent(jTextFieldCountry, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextFieldLastName)
+                                    .addComponent(jTextFieldFirstName)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 247, Short.MAX_VALUE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel3)
-                                .addGap(34, 34, 34)
-                                .addComponent(jButtonRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(41, 41, 41)
+                                .addComponent(jButtonSignIn, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabelForgetPass)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jCheckBoxShowPass)))
-                        .addGap(28, 28, 28))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jCheckBoxShowPass))
+                            .addComponent(jButtonSignUp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(46, 46, 46))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jButtonRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(36, 36, 36)
+                            .addComponent(jLabel3))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButtonSignIn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
-                .addGap(39, 39, 39)
+                .addGap(52, 52, 52)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jTextFieldCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -197,11 +259,12 @@ public class RegisterForm extends javax.swing.JFrame {
                     .addComponent(jPasswordFieldPass, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBoxShowPass)
-                    .addComponent(jLabelForgetPass))
-                .addGap(18, 18, 18)
-                .addComponent(jButtonLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(102, Short.MAX_VALUE))
+                    .addComponent(jPasswordFieldConfirmPass, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jCheckBoxShowPass)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(jButtonSignUp, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jPanel3.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 550, 540));
@@ -220,12 +283,12 @@ public class RegisterForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterActionPerformed
+    private void jButtonSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignInActionPerformed
         RegisterForm register = new RegisterForm();
         register.setVisible(true);
         dispose();
 
-    }//GEN-LAST:event_jButtonRegisterActionPerformed
+    }//GEN-LAST:event_jButtonSignInActionPerformed
 
     private void jTextFieldEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEmailActionPerformed
         // TODO add your handling code here:
@@ -235,39 +298,69 @@ public class RegisterForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordFieldPassActionPerformed
 
-    private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
+    private void jButtonSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignUpActionPerformed
          try {
 
-             User user = controller.login(
-                    jTextFieldEmail.getText(),
-                    String.valueOf(jPasswordFieldPass.getPassword())
-            );
+            String password = String.valueOf(jPasswordFieldPass.getPassword());
+            String confirmPassword = String.valueOf(jPasswordFieldConfirmPass.getPassword());
 
-             JOptionPane.showMessageDialog(this,
-                    "Welcome, " + user.getFirstName());
+            if (!password.equals(confirmPassword)) {
+                throw new Exception("Password dan Confirm Password tidak sama.");
+            }
 
-            new DashboardForm().setVisible(true);
-            dispose();
+            User user = new User();
 
-        } catch (Exception e) {
+            user.setFirstName(jTextFieldFirstName.getText());
+            user.setLastName(jTextFieldLastName.getText());
+            user.setEmail(jTextFieldEmail.getText());
+            user.setCountry(jTextFieldCountry.getText());
+            user.setPassword(password);
+
+            controller.register(user);
 
             JOptionPane.showMessageDialog(
                     this,
-                    e.getMessage(),
-                    "Login Failed",
+                    "Registrasi berhasil!");
+
+            new LoginForm().setVisible(true);
+            dispose();
+
+        } catch (Exception ex) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    ex.getMessage(),
+                    "Register Failed",
                     JOptionPane.ERROR_MESSAGE
             );
 
         }
-    }//GEN-LAST:event_jButtonLoginActionPerformed
+
+    }
+    }//GEN-LAST:event_jButtonSignUpActionPerformed
 
     private void jCheckBoxShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxShowPassActionPerformed
-        if (jCheckBoxShowPass.isSelected()) {
-            jPasswordFieldPass.setEchoChar((char) 0);
-        } else {
-            jPasswordFieldPass.setEchoChar('*');
-        }
+        char echo = jCheckBoxShowPass.isSelected() ? (char) 0 : '*';
+
+        jPasswordFieldPass.setEchoChar(echo);
+        jPasswordFieldConfirmPass.setEchoChar(echo);
     }//GEN-LAST:event_jCheckBoxShowPassActionPerformed
+
+    private void jTextFieldCountryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCountryActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldCountryActionPerformed
+
+    private void jTextFieldLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldLastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldLastNameActionPerformed
+
+    private void jTextFieldFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldFirstNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldFirstNameActionPerformed
+
+    private void jPasswordFieldConfirmPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordFieldConfirmPassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPasswordFieldConfirmPassActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,23 +388,30 @@ public class RegisterForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonLogin;
-    private javax.swing.JButton jButtonRegister;
+    private javax.swing.JButton jButtonSignIn;
+    private javax.swing.JButton jButtonSignUp;
     private javax.swing.JCheckBox jCheckBoxShowPass;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabelForgetPass;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanelBackground;
     private javax.swing.JPanel jPanelCard;
     private javax.swing.JPanel jPanelPoster;
+    private javax.swing.JPasswordField jPasswordFieldConfirmPass;
     private javax.swing.JPasswordField jPasswordFieldPass;
+    private javax.swing.JTextField jTextFieldCountry;
     private javax.swing.JTextField jTextFieldEmail;
+    private javax.swing.JTextField jTextFieldFirstName;
+    private javax.swing.JTextField jTextFieldLastName;
     // End of variables declaration//GEN-END:variables
-}
+
