@@ -45,7 +45,17 @@ public class BookingController {
         if (booking.getTotalPrice() <= 0) {
             throw new Exception("Invalid total price!");
         }
+        
+        ArrayList<String> bookedSeats = bookingDAO.getBookedSeats(
+                booking.getStudio().getStudioID(),
+                booking.getBookingDate(),
+                booking.getShowTime()
+        );
 
+        if (bookedSeats.contains(booking.getSeatNumber())) {
+            throw new Exception("Seat has already been booked!");
+        }
+        
         if (bookingDAO.insert(booking) == 0) {
             throw new Exception("Failed to save booking!");
         }
@@ -129,5 +139,15 @@ public class BookingController {
     public int getTotalData() {
         return bookingDAO.getTotalData();
     }
+    
+    public ArrayList<String> getBookedSeats(int studioID,
+                                        java.sql.Date bookingDate,
+                                        java.sql.Time showTime) {
 
+        return bookingDAO.getBookedSeats(
+                studioID,
+                bookingDate,
+                showTime
+        );
+    }
 }

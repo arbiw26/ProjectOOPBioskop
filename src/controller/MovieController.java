@@ -34,7 +34,7 @@ public class MovieController {
         }
 
         if (movieDAO.insert(movie) == 0) {
-            throw new Exception("Failed to save customer!");
+            throw new Exception("Failed to save movie!");
         }
 
     }
@@ -42,7 +42,7 @@ public class MovieController {
     public void update(Movie movie) throws Exception {
 
         if (movie.getMovieID() <= 0) {
-            throw new Exception("Invalid customer ID!");
+            throw new Exception("Invalid movie ID!");
         }
 
         if (movie.getTitle().trim().isEmpty()) {
@@ -58,7 +58,7 @@ public class MovieController {
         }
 
         if (movieDAO.update(movie) == 0) {
-            throw new Exception("Failed to update customer!");
+            throw new Exception("Failed to update movie!");
         }
 
     }
@@ -66,11 +66,11 @@ public class MovieController {
     public void delete(int movieID) throws Exception {
 
         if (movieID <= 0) {
-            throw new Exception("Please select customer first!");
+            throw new Exception("Please select movie first!");
         }
 
         if (movieDAO.delete(movieID) == 0) {
-            throw new Exception("Failed to delete customer!");
+            throw new Exception("Failed to delete movie!");
         }
 
     }

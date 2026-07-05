@@ -287,4 +287,31 @@ public class BookingDAOImpl implements DaoInterface<Booking>{
 
         return 0;
     }
+    
+    public ArrayList<String> getBookedSeats(int studioID,
+                                        java.sql.Date bookingDate,
+                                        java.sql.Time showTime) {
+
+        ArrayList<String> bookedSeats = new ArrayList<>();
+        try {
+            String sql = """
+                SELECT seatNumber
+                FROM bookings
+                WHERE studioID = ?
+                AND bookingDate = ?
+                AND showTime = ?
+            """;
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, studioID);
+            stmt.setDate(2, bookingDate);
+            stmt.setTime(3, showTime);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                bookedSeats.add(rs.getString("seatNumber"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookedSeats;
+    }
 }

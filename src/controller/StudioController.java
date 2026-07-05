@@ -42,7 +42,7 @@ public class StudioController {
     public void update(Studio studio) throws Exception {
 
         if (studio.getStudioID() <= 0) {
-            throw new Exception("Invalid customer ID!");
+            throw new Exception("Invalid studio ID!");
         }
 
         if (studio.getStudioName().trim().isEmpty()) {
@@ -58,7 +58,7 @@ public class StudioController {
         }
 
         if (studioDAO.update(studio) == 0) {
-            throw new Exception("Failed to update customer!");
+            throw new Exception("Failed to update studio!");
         }
 
     }
@@ -66,11 +66,11 @@ public class StudioController {
     public void delete(int studioID) throws Exception {
 
         if (studioID <= 0) {
-            throw new Exception("Please select customer first!");
+            throw new Exception("Please select studio first!");
         }
 
         if (studioDAO.delete(studioID) == 0) {
-            throw new Exception("Failed to delete customer!");
+            throw new Exception("Failed to delete studio!");
         }
 
     }
