@@ -35,6 +35,10 @@ public class UserController {
         if (user.getPassword().trim().isEmpty()) {
             throw new Exception("Password cannot be empty!");
         }
+        
+        if (user.getPassword().length() < 8) {
+            throw new Exception("Password must be at least 8 characters!");
+        }
 
         if (user.getCountry().trim().isEmpty()) {
             throw new Exception("Country cannot be empty!");
@@ -87,6 +91,10 @@ public class UserController {
 
         if (newPassword.trim().isEmpty()) {
             throw new Exception("New password cannot be empty!");
+        }
+        
+        if (newPassword.length() < 8) {
+            throw new Exception("Password must be at least 8 character!");
         }
 
         if (confirmPassword.trim().isEmpty()) {
