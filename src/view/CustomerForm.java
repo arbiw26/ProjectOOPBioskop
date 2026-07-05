@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view;
-import controller.CustomerController;
+
+import controller.StudioController;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -16,70 +17,79 @@ import model.Customer;
  */
 public class CustomerForm extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Customer.class.getName());
-    private CustomerController customerController;
-    private DefaultTableModel tableModel;
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CustomerForm.class.getName());
+    private StudioController controller;
+    private int selectedId = -1;
     private int currentPage = 1;
     private final int recordsPerPage = 10;
-    private int selectedCustomerID = -1;
     /**
-     * Creates new form Student
+     * Creates new form StudioForm
      */
     public CustomerForm() {
         initComponents();
-        hideIDColumn();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        customerController = new CustomerController();
-        tableModel = (DefaultTableModel) jTableCustomer.getModel();
+         controller = new StudioController();
+
+        jLabelCapacity.setText("60 Seats");
         loadTable();
+        jTableCustomer.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                fillForm();
+            }
+        });
     }
     
     private void loadTable() {
-
-        tableModel.setRowCount(0);
-
-        try {
-            ArrayList<Customer> customers = customerController.pagination(currentPage, recordsPerPage);
-            for (Customer customer : customers) {
-                Object[] row = {
-                    customer.getCustomerID(),
-                    customer.getName(),
-                    customer.getPhone(),
-                    customer.getMembership()
-                };
-                tableModel.addRow(row);
+         try{
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Studio ID");
+            model.addColumn("Studio Name");
+            model.addColumn("Capacity");
+            model.addColumn("Ticket Price");
+            ArrayList<Studio> list =
+                    controller.pagination(currentPage, recordsPerPage);
+            for(Studio studio : list){
+                model.addRow(new Object[]{
+                    studio.getStudioID(),
+                    studio.getStudioName(),
+                    studio.getCapacity(),
+                    studio.getTicketPrice()
+                });
             }
-        } catch (Exception e) {
+            jTableCustomer.setModel(model);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this,e.getMessage());
         }
     }
     
-    private void clearForm(){
-        jTextFieldCusName.setText("");
-        jTextFieldPhoneNum.setText("");
-        jComboBoxMember.setSelectedIndex(0);
-        selectedCustomerID = -1;
-        jTableCustomer.clearSelection();
-    }
-    
-    private Customer getFormData(){
-
-        Customer customer = new Customer();
-
-        customer.setCustomerID(selectedCustomerID);
-        customer.setName(jTextFieldCusName.getText());
-        customer.setPhone(jTextFieldPhoneNum.getText());
-        customer.setMembership(jComboBoxMember.getSelectedItem().toString());
-
-        return customer;
-
-    }
-    
     private void hideIDColumn() {
-
         jTableCustomer.getColumnModel().getColumn(0).setMinWidth(0);
         jTableCustomer.getColumnModel().getColumn(0).setMaxWidth(0);
         jTableCustomer.getColumnModel().getColumn(0).setWidth(0);
         jTableCustomer.getColumnModel().getColumn(0).setPreferredWidth(0);
+    }
+    
+    private void clearForm(){
+        selectedId = -1;
+        jTextFieldCustomerName.setText("");
+        jTextField1.setText("");
+        jLabelCapacity.setText("60 Seats");
+        jTableCustomer.clearSelection();
+        jButtonSave.setText("Save");
+    }
+    
+    private void fillForm(){
+        int row = jTableCustomer.getSelectedRow();
+        if(row == -1) return;
+        selectedId = Integer.parseInt(
+                jTableCustomer.getValueAt(row,0).toString());
+        jTextFieldCustomerName.setText(
+                jTableCustomer.getValueAt(row,1).toString());
+        jLabelCapacity.setText(
+                jTableCustomer.getValueAt(row,2).toString());
+        jTextField1.setText(
+                jTableCustomer.getValueAt(row,3).toString());
+        jButtonSave.setText("Update");
 
     }
 
@@ -95,345 +105,352 @@ public class CustomerForm extends javax.swing.JFrame {
         jPanelBackground = new javax.swing.JPanel();
         jPanelHeader = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanelForm = new javax.swing.JPanel();
-        jTextFieldCusName = new javax.swing.JTextField();
-        jTextFieldPhoneNum = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jButtonCancel = new javax.swing.JButton();
-        jButtonDelete = new javax.swing.JButton();
-        jButtonSave = new javax.swing.JButton();
-        jComboBoxMember = new javax.swing.JComboBox<>();
+        jPanelContent = new javax.swing.JPanel();
+        jPanelInput = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextFieldCustomerName = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextFieldSearch = new javax.swing.JTextField();
-        jButtonSearch = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jButtonSave = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
+        jButtonClear = new javax.swing.JButton();
         jButtonBack = new javax.swing.JButton();
-        jPanelTabel = new javax.swing.JPanel();
+        jTextFieldPhoneNumber = new javax.swing.JTextField();
+        jComboBoxMembership = new javax.swing.JComboBox<>();
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableCustomer = new javax.swing.JTable();
-        jButtonNext = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
+        jButtonSearch = new javax.swing.JButton();
         jButtonPrev = new javax.swing.JButton();
+        jButtonNext = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanelBackground.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelBackground.setBackground(new java.awt.Color(18, 18, 18));
+        jPanelBackground.setLayout(new java.awt.BorderLayout());
 
-        jPanelHeader.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelHeader.setBackground(new java.awt.Color(30, 30, 30));
+        jPanelHeader.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(255, 0, 51)));
+        jPanelHeader.setPreferredSize(new java.awt.Dimension(1748, 60));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("DATA CUSTOMER");
-        jLabel1.setToolTipText("");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText(" Customer Management");
+        jLabel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 5, 0, 0, new java.awt.Color(255, 0, 51)));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/clapperboard.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanelHeaderLayout = new javax.swing.GroupLayout(jPanelHeader);
         jPanelHeader.setLayout(jPanelHeaderLayout);
         jPanelHeaderLayout.setHorizontalGroup(
             jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelHeaderLayout.createSequentialGroup()
-                .addContainerGap(654, Short.MAX_VALUE)
+            .addGroup(jPanelHeaderLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addGap(138, 138, 138))
+                .addContainerGap(1194, Short.MAX_VALUE))
         );
         jPanelHeaderLayout.setVerticalGroup(
             jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelHeaderLayout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap())
+            .addGroup(jPanelHeaderLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
-        jPanelForm.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelBackground.add(jPanelHeader, java.awt.BorderLayout.PAGE_START);
 
-        jLabel2.setText("Nama");
+        jPanelContent.setBackground(new java.awt.Color(18, 18, 18));
+        jPanelContent.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setText("Phone Number");
+        jPanelInput.setBackground(new java.awt.Color(30, 30, 30));
+        jPanelInput.setPreferredSize(new java.awt.Dimension(1748, 170));
 
-        jButtonCancel.setText("Batal");
-        jButtonCancel.addActionListener(this::jButtonCancelActionPerformed);
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Customer Name");
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Phone Number");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Membership");
+
+        jButtonSave.setBackground(new java.awt.Color(255, 0, 51));
+        jButtonSave.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonSave.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonSave.setText("Save");
+        jButtonSave.addActionListener(this::jButtonSaveActionPerformed);
+
+        jButtonDelete.setBackground(new java.awt.Color(255, 0, 51));
+        jButtonDelete.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonDelete.setForeground(new java.awt.Color(255, 255, 255));
         jButtonDelete.setText("Delete");
         jButtonDelete.addActionListener(this::jButtonDeleteActionPerformed);
 
-        jButtonSave.setText("Simpan");
-        jButtonSave.addActionListener(this::jButtonSaveActionPerformed);
+        jButtonClear.setBackground(new java.awt.Color(255, 0, 51));
+        jButtonClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonClear.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonClear.setText("Clear");
+        jButtonClear.addActionListener(this::jButtonClearActionPerformed);
 
-        jComboBoxMember.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Reguler", "Member" }));
-
-        jLabel5.setText("Membership");
-
-        jTextFieldSearch.setText("Pencarian");
-        jTextFieldSearch.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextFieldSearchKeyReleased(evt);
-            }
-        });
-
-        jButtonSearch.setText("Cari");
-        jButtonSearch.addActionListener(this::jButtonSearchActionPerformed);
-
+        jButtonBack.setBackground(new java.awt.Color(255, 0, 51));
+        jButtonBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonBack.setForeground(new java.awt.Color(255, 255, 255));
         jButtonBack.setText("Back");
-        jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
-        javax.swing.GroupLayout jPanelFormLayout = new javax.swing.GroupLayout(jPanelForm);
-        jPanelForm.setLayout(jPanelFormLayout);
-        jPanelFormLayout.setHorizontalGroup(
-            jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelFormLayout.createSequentialGroup()
-                .addGap(333, 333, 333)
-                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelFormLayout.createSequentialGroup()
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButtonCancel)
-                            .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
+        jComboBoxMembership.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout jPanelInputLayout = new javax.swing.GroupLayout(jPanelInput);
+        jPanelInput.setLayout(jPanelInputLayout);
+        jPanelInputLayout.setHorizontalGroup(
+            jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInputLayout.createSequentialGroup()
+                .addGap(201, 201, 201)
+                .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelInputLayout.createSequentialGroup()
+                        .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonSearch))
-                    .addGroup(jPanelFormLayout.createSequentialGroup()
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jTextFieldCusName, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanelFormLayout.createSequentialGroup()
-                                    .addComponent(jLabel3)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jTextFieldPhoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jButtonBack))
-                        .addGap(86, 86, 86)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanelFormLayout.createSequentialGroup()
-                                .addComponent(jButtonDelete)
-                                .addGap(146, 146, 146)
-                                .addComponent(jButtonSave))
-                            .addComponent(jComboBoxMember, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(290, Short.MAX_VALUE))
+                        .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldCustomerName, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+                            .addComponent(jTextFieldPhoneNumber))
+                        .addGap(258, 258, 258))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInputLayout.createSequentialGroup()
+                        .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(jButtonClear, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(63, 63, 63)
+                        .addComponent(jButtonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)))
+                .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelInputLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBoxMembership, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelInputLayout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(273, Short.MAX_VALUE))
         );
-        jPanelFormLayout.setVerticalGroup(
-            jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelFormLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelFormLayout.createSequentialGroup()
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jTextFieldCusName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15)
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldPhoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButtonCancel)
-                                .addComponent(jButtonDelete)
-                                .addComponent(jButtonSave))
-                            .addComponent(jButtonBack)))
-                    .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
-                        .addComponent(jComboBoxMember, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                .addGroup(jPanelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonSearch))
-                .addGap(22, 22, 22))
+        jPanelInputLayout.setVerticalGroup(
+            jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInputLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jTextFieldCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(jComboBoxMembership, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jTextFieldPhoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonBack)
+                    .addComponent(jButtonClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonSave))
+                .addGap(26, 26, 26))
         );
 
-        jPanelTabel.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelContent.add(jPanelInput, java.awt.BorderLayout.PAGE_START);
+
+        jPanel1.setBackground(new java.awt.Color(30, 30, 30));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
         jTableCustomer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Name", "Phone Number", "Membership"
+                "Customer ID", "Customer Name", "Phone Number", "Membership"
             }
         ));
-        jTableCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTableCustomerMouseClicked(evt);
-            }
-        });
         jScrollPane1.setViewportView(jTableCustomer);
 
+        jTextField2.setText("Searching");
+        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+
+        jButtonSearch.setBackground(new java.awt.Color(255, 0, 51));
+        jButtonSearch.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonSearch.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonSearch.setText("Search");
+        jButtonSearch.addActionListener(this::jButtonSearchActionPerformed);
+
+        jButtonPrev.setBackground(new java.awt.Color(255, 0, 51));
+        jButtonPrev.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonPrev.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonPrev.setText("<< Prev");
+        jButtonPrev.addActionListener(this::jButtonPrevActionPerformed);
+
+        jButtonNext.setBackground(new java.awt.Color(255, 0, 51));
+        jButtonNext.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonNext.setForeground(new java.awt.Color(255, 255, 255));
         jButtonNext.setText("Next >>");
         jButtonNext.addActionListener(this::jButtonNextActionPerformed);
 
-        jButtonPrev.setText("Prev <<");
-        jButtonPrev.addActionListener(this::jButtonPrevActionPerformed);
-
-        javax.swing.GroupLayout jPanelTabelLayout = new javax.swing.GroupLayout(jPanelTabel);
-        jPanelTabel.setLayout(jPanelTabelLayout);
-        jPanelTabelLayout.setHorizontalGroup(
-            jPanelTabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTabelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelTabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanelTabelLayout.createSequentialGroup()
-                        .addComponent(jButtonPrev)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonNext)))
-                .addContainerGap())
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 35, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jButtonPrev, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonNext, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1456, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
-        jPanelTabelLayout.setVerticalGroup(
-            jPanelTabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelTabelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanelTabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonNext)
-                    .addComponent(jButtonPrev))
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanelBackgroundLayout = new javax.swing.GroupLayout(jPanelBackground);
-        jPanelBackground.setLayout(jPanelBackgroundLayout);
-        jPanelBackgroundLayout.setHorizontalGroup(
-            jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelBackgroundLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jPanelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanelTabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackgroundLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanelForm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanelBackgroundLayout.setVerticalGroup(
-            jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelBackgroundLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jPanelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanelTabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonPrev)
+                    .addComponent(jButtonNext))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
+
+        jPanelContent.add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        jPanelBackground.add(jPanelContent, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanelBackground, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        try{
-            customerController.delete(selectedCustomerID);
-            JOptionPane.showMessageDialog(this,
-                    "Customer deleted successfully!");
-            loadTable();
-            clearForm();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage());
-        }
-    }//GEN-LAST:event_jButtonDeleteActionPerformed
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-        try{
-            Customer customer = getFormData();
-            if(selectedCustomerID == -1){
-                customerController.insert(customer);
+        try {
+            Studio studio = new Studio();
+            studio.setStudioName(jTextFieldCustomerName.getText());
+            studio.setCapacity(60);
+            studio.setTicketPrice(Double.parseDouble(jTextField1.getText()));
+            if(selectedId == -1){
+                controller.insert(studio);
                 JOptionPane.showMessageDialog(this,
-                        "Customer added successfully!");
+                        "Studio added successfully!");
             }else{
-                customerController.update(customer);
+                studio.setStudioID(selectedId);
+                controller.update(studio);
                 JOptionPane.showMessageDialog(this,
-                        "Customer updated successfully!");
+                        "Studio updated successfully!");
             }
-            loadTable();
             clearForm();
+            loadTable();
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(this,
+                    "Ticket price must be a number!");
         }catch(Exception e){
             JOptionPane.showMessageDialog(this,
                     e.getMessage());
         }
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
-    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
-        clearForm();
-    }//GEN-LAST:event_jButtonCancelActionPerformed
-
-    private void jTableCustomerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableCustomerMouseClicked
-        int row = jTableCustomer.getSelectedRow();
-
-    selectedCustomerID = Integer.parseInt(
-            tableModel.getValueAt(row, 0).toString());
-
-    jTextFieldCusName.setText(
-            tableModel.getValueAt(row,1).toString());
-
-    jTextFieldPhoneNum.setText(
-            tableModel.getValueAt(row,2).toString());
-
-    jComboBoxMember.setSelectedItem(
-            tableModel.getValueAt(row,3).toString());
-    }//GEN-LAST:event_jTableCustomerMouseClicked
-
-    private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevActionPerformed
-        if(currentPage > 1){
-            currentPage--;
-            loadTable();
-        }
-    }//GEN-LAST:event_jButtonPrevActionPerformed
-
-    private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextActionPerformed
-        currentPage++;
-        loadTable();
-    }//GEN-LAST:event_jButtonNextActionPerformed
-
-    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         try{
-            tableModel.setRowCount(0);
-            ArrayList<Customer> customers =
-                    customerController.search(
-                            jTextFieldSearch.getText());
+            controller.delete(selectedId);
 
-            for(Customer customer : customers){
-                Object[] row = {
+            JOptionPane.showMessageDialog(this,
+                    "Studio deleted successfully!");
 
-                    customer.getCustomerID(),
-                    customer.getName(),
-                    customer.getPhone(),
-                    customer.getMembership()
+            clearForm();
+            loadTable();
 
-                };
-                tableModel.addRow(row);
-            }
         }catch(Exception e){
+
             JOptionPane.showMessageDialog(this,
                     e.getMessage());
 
         }
+
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
+
+    private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
+        clearForm();
+        loadTable();
+    }//GEN-LAST:event_jButtonClearActionPerformed
+
+    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
+        String keyword = jTextField2.getText().trim();
+
+        DefaultTableModel model = new DefaultTableModel();
+
+        model.addColumn("Studio ID");
+        model.addColumn("Studio Name");
+        model.addColumn("Capacity");
+        model.addColumn("Ticket Price");
+
+        ArrayList<Studio> list;
+
+        if(keyword.isEmpty()){
+            list = controller.getAll();
+        }else{
+            list = controller.search(keyword);
+        }
+
+        for(Studio studio : list){
+
+            model.addRow(new Object[]{
+                studio.getStudioID(),
+                studio.getStudioName(),
+                studio.getCapacity(),
+                studio.getTicketPrice()
+            });
+
+        }
+
+        jTableCustomer.setModel(model);
     }//GEN-LAST:event_jButtonSearchActionPerformed
 
-    private void jTextFieldSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSearchKeyReleased
-         try {
-            tableModel.setRowCount(0);
-            String keyword = jTextFieldSearch.getText().trim();
-            ArrayList<Customer> customers;
-            if (keyword.isEmpty()) {
-                customers = customerController.pagination(currentPage, recordsPerPage);
-            } else {
-                customers = customerController.search(keyword);
-            }
-            for (Customer customer : customers) {
-                Object[] row = {
-                    customer.getCustomerID(),
-                    customer.getName(),
-                    customer.getPhone(),
-                    customer.getMembership()
-                };
-                tableModel.addRow(row);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
-        }
-    }//GEN-LAST:event_jTextFieldSearchKeyReleased
+    private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextActionPerformed
+        try{
+            int totalData = controller.getTotalData();
+            int totalPage = (int)Math.ceil((double)totalData / recordsPerPage);
+            if(currentPage < totalPage){
+                currentPage++;
+                loadTable();
 
-    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
-        
-    }//GEN-LAST:event_jButtonBackActionPerformed
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this,e.getMessage());
+        }
+    }//GEN-LAST:event_jButtonNextActionPerformed
+
+    private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevActionPerformed
+        if(currentPage > 1){
+        currentPage--;
+        loadTable();
+
+    }
+    }//GEN-LAST:event_jButtonPrevActionPerformed
 
     /**
      * @param args the command line arguments
@@ -462,25 +479,27 @@ public class CustomerForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBack;
-    private javax.swing.JButton jButtonCancel;
+    private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonNext;
     private javax.swing.JButton jButtonPrev;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonSearch;
-    private javax.swing.JComboBox<String> jComboBoxMember;
+    private javax.swing.JComboBox<String> jComboBoxMembership;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelBackground;
-    private javax.swing.JPanel jPanelForm;
+    private javax.swing.JPanel jPanelContent;
     private javax.swing.JPanel jPanelHeader;
-    private javax.swing.JPanel jPanelTabel;
+    private javax.swing.JPanel jPanelInput;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCustomer;
-    private javax.swing.JTextField jTextFieldCusName;
-    private javax.swing.JTextField jTextFieldPhoneNum;
-    private javax.swing.JTextField jTextFieldSearch;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextFieldCustomerName;
+    private javax.swing.JTextField jTextFieldPhoneNumber;
     // End of variables declaration//GEN-END:variables
 }
