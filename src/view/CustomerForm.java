@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Customer;
+import model.User;
 
 /**
  *
@@ -18,13 +19,15 @@ import model.Customer;
 public class CustomerForm extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CustomerForm.class.getName());
-   private CustomerController controller;
+    private CustomerController controller;
     private int selectedId = -1;
     private int currentPage = 1;
     private final int recordsPerPage = 10;
+    private User user;
     /**
      * Creates new form StudioForm
      */
+    
     public CustomerForm() {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -35,6 +38,10 @@ public class CustomerForm extends javax.swing.JFrame {
                 fillForm();
             }
         });
+    }
+    public CustomerForm(User user) {
+        this.user = user;
+        this();
     }
     
     private void loadTable() {
@@ -51,17 +58,14 @@ public class CustomerForm extends javax.swing.JFrame {
                 });
             }
             jTableCustomer.setModel(model);
+            jTableCustomer.getColumnModel().getColumn(0).setMinWidth(0);
+            jTableCustomer.getColumnModel().getColumn(0).setMaxWidth(0);
+            jTableCustomer.getColumnModel().getColumn(0).setWidth(0);
+            jTableCustomer.getColumnModel().getColumn(0).setPreferredWidth(0);
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
-    }
-    
-    private void hideIDColumn() {
-        jTableCustomer.getColumnModel().getColumn(0).setMinWidth(0);
-        jTableCustomer.getColumnModel().getColumn(0).setMaxWidth(0);
-        jTableCustomer.getColumnModel().getColumn(0).setWidth(0);
-        jTableCustomer.getColumnModel().getColumn(0).setPreferredWidth(0);
     }
     
     private void clearForm(){
@@ -200,6 +204,7 @@ public class CustomerForm extends javax.swing.JFrame {
         jButtonBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(255, 255, 255));
         jButtonBack.setText("Back");
+        jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
         jComboBoxMembership.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Reguler", "Member" }));
 
@@ -428,6 +433,12 @@ public class CustomerForm extends javax.swing.JFrame {
 
     }
     }//GEN-LAST:event_jButtonPrevActionPerformed
+
+    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+            DashboardForm dashboard = new DashboardForm(user);
+            dashboard.setVisible(true);
+            dispose();
+    }//GEN-LAST:event_jButtonBackActionPerformed
 
     /**
      * @param args the command line arguments

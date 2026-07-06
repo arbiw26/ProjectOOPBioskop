@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Movie;
+import model.User;
 
 /**
  *
@@ -22,9 +23,11 @@ public class MovieForm extends javax.swing.JFrame {
     private int selectedId = -1;
     private int currentPage = 1;
     private final int recordsPerPage = 10;
+    private User user;
     /**
      * Creates new form StudioForm
      */
+    
     public MovieForm() {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -35,6 +38,11 @@ public class MovieForm extends javax.swing.JFrame {
                 fillForm();
             }
         });
+    }
+    
+    public MovieForm(User user) {
+        this.user = user;
+        this();
     }
     
     private void loadTable() {
@@ -203,6 +211,7 @@ public class MovieForm extends javax.swing.JFrame {
         jButtonBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(255, 255, 255));
         jButtonBack.setText("Back");
+        jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -448,6 +457,12 @@ public class MovieForm extends javax.swing.JFrame {
             loadTable();
         }
     }//GEN-LAST:event_jButtonPrevActionPerformed
+
+    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+            DashboardForm dashboard = new DashboardForm(user);
+            dashboard.setVisible(true);
+            dispose();
+    }//GEN-LAST:event_jButtonBackActionPerformed
 
     /**
      * @param args the command line arguments

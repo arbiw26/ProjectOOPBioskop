@@ -315,4 +315,47 @@ public class BookingDAOImpl implements DaoInterface<Booking>{
 
         return seats;
     }
+    
+    public ArrayList<Booking> getLatestBooking() throws Exception {
+        ArrayList<Booking> bookings = new ArrayList<>();
+
+        String sql = "SELECT b.*, c.customerName, m.title, s.studioName "
+                + "FROM bookings b "
+                + "JOIN customers c ON b.customerID = c.customerID "
+                + "JOIN movies m ON b.movieID = m.movieID "
+                + "JOIN studios s ON b.studioID = s.studioID "
+                + "ORDER BY b.bookingID DESC "
+                + "LIMIT 5";
+
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Customer customer = new Customer();
+            customer.setCustomerID(rs.getInt("customerID"));
+            customer.setName(rs.getString("customerName"));
+
+            Movie movie = new Movie();
+            movie.setMovieID(rs.getInt("movieID"));
+            movie.setTitle(rs.getString("title"));
+
+            Studio studio = new Studio();
+            studio.setStudioID(rs.getInt("studioID"));
+            studio.setStudioName(rs.getString("studioName"));
+
+            Booking booking = new Booking();
+            booking.setBookingID(rs.getInt("bookingID"));
+            booking.setCustomer(customer);
+            booking.setMovie(movie);
+            booking.setStudio(studio);
+            booking.setSeatNumber(rs.getString("seatNumber"));
+            booking.setBookingDate(rs.getDate("bookingDate"));
+            booking.setShowTime(rs.getTime("showTime"));
+            booking.setTotalPrice(rs.getDouble("totalPrice"));
+
+            bookings.add(booking);
+        }
+
+        return bookings;
+    }
 }

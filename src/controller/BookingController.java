@@ -147,4 +147,8 @@ public class BookingController {
         return bookingDAO.getBookedSeats(studioID, bookingDate, showTime);
 
     }
+    
+    public ArrayList<Booking> getLatestBooking() throws Exception {
+        return bookingDAO.getLatestBooking();
+    }
 }

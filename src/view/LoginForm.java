@@ -252,7 +252,8 @@ public class LoginForm extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(this,
                     "Welcome, " + user.getFirstName());
 
-            new DashboardForm().setVisible(true);
+            DashboardForm dashboard = new DashboardForm(user);
+            dashboard.setVisible(true);
             dispose();
 
         } catch (Exception e) {

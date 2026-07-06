@@ -21,6 +21,7 @@ import model.Booking;
 import model.Customer;
 import model.Movie;
 import model.Studio;
+import model.User;
 /**
  *
  * @author Arbi Wiratama
@@ -37,9 +38,11 @@ public class BookingForm extends javax.swing.JFrame {
     private final int recordsPerPage = 10;
     private String selectedSeat = "";
     private JButton selectedButton = null;
+    private User user;
     /**
      * Creates new form BookingForm
      */
+    
     public BookingForm() {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -47,7 +50,6 @@ public class BookingForm extends javax.swing.JFrame {
         customerController = new CustomerController();
         movieController = new MovieController();
         studioController = new StudioController();
-
         loadCustomer();
         loadMovie();
         loadStudio();
@@ -57,6 +59,11 @@ public class BookingForm extends javax.swing.JFrame {
         if (jComboBoxStudio.getSelectedItem() != null) {
         createSeat((Studio) jComboBoxStudio.getSelectedItem());
         }
+    }
+    
+    public BookingForm(User user) {
+        this.user = user;
+        this();
     }
     
     private void loadTable() {
@@ -76,6 +83,10 @@ public class BookingForm extends javax.swing.JFrame {
                 booking.getTotalPrice()
             };
             model.addRow(row);
+            jTableBooking.getColumnModel().getColumn(0).setMinWidth(0);
+            jTableBooking.getColumnModel().getColumn(0).setMaxWidth(0);
+            jTableBooking.getColumnModel().getColumn(0).setWidth(0);
+            jTableBooking.getColumnModel().getColumn(0).setPreferredWidth(0);
         }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
@@ -637,6 +648,7 @@ public class BookingForm extends javax.swing.JFrame {
         jButtonBack.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonBack.setForeground(new java.awt.Color(255, 255, 255));
         jButtonBack.setText("Back");
+        jButtonBack.addActionListener(this::jButtonBackActionPerformed);
 
         jButtonClear.setBackground(new java.awt.Color(255, 0, 51));
         jButtonClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -962,6 +974,12 @@ public class BookingForm extends javax.swing.JFrame {
     private void jComboBoxCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCustomerActionPerformed
         updateSummary();
     }//GEN-LAST:event_jComboBoxCustomerActionPerformed
+
+    private void jButtonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBackActionPerformed
+            DashboardForm dashboard = new DashboardForm(user);
+            dashboard.setVisible(true);
+            dispose();
+    }//GEN-LAST:event_jButtonBackActionPerformed
 
     /**
      * @param args the command line arguments
