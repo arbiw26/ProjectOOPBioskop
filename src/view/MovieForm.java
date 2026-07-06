@@ -4,34 +4,33 @@
  */
 package view;
 
-import controller.StudioController;
+import controller.MovieController;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.Studio;
+import model.Movie;
 
 /**
  *
  * @author Arbi Wiratama
  */
-public class StudioForm extends javax.swing.JFrame {
+public class MovieForm extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StudioForm.class.getName());
-    private StudioController controller;
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MovieForm.class.getName());
+    private MovieController controller;
     private int selectedId = -1;
     private int currentPage = 1;
     private final int recordsPerPage = 10;
     /**
      * Creates new form StudioForm
      */
-    public StudioForm() {
+    public MovieForm() {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        controller = new StudioController();
-        jLabelCapacity.setText("60 Seats");
+        controller = new MovieController();
         loadTable();
-        jTableStudio.getSelectionModel().addListSelectionListener(e -> {
+        jTableMovie.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 fillForm();
             }
@@ -39,23 +38,25 @@ public class StudioForm extends javax.swing.JFrame {
     }
     
     private void loadTable() {
-         try{
-            DefaultTableModel model = (DefaultTableModel) jTableStudio.getModel();
+        try{
+            DefaultTableModel model = (DefaultTableModel) jTableMovie.getModel();
             model.setRowCount(0);
-            ArrayList<Studio> list = controller.pagination(currentPage, recordsPerPage);
-            for(Studio studio : list){
+            ArrayList<Movie> movies =
+                    controller.pagination(currentPage, recordsPerPage);
+            for(Movie movie : movies){
                 model.addRow(new Object[]{
-                    studio.getStudioID(),
-                    studio.getStudioName(),
-                    studio.getCapacity(),
-                    studio.getTicketPrice()
+                    movie.getMovieID(),
+                    movie.getTitle(),
+                    movie.getGenre(),
+                    movie.getDuration(),
+                    movie.getRating()
                 });
             }
-            jTableStudio.setModel(model);
-            jTableStudio.getColumnModel().getColumn(0).setMinWidth(0);
-            jTableStudio.getColumnModel().getColumn(0).setMaxWidth(0);
-            jTableStudio.getColumnModel().getColumn(0).setWidth(0);
-            jTableStudio.getColumnModel().getColumn(0).setPreferredWidth(0);
+        jTableMovie.setModel(model);
+        jTableMovie.getColumnModel().getColumn(0).setMinWidth(0);
+        jTableMovie.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTableMovie.getColumnModel().getColumn(0).setWidth(0);
+        jTableMovie.getColumnModel().getColumn(0).setPreferredWidth(0);
         }catch(Exception e){
             JOptionPane.showMessageDialog(this,e.getMessage());
         }
@@ -64,26 +65,28 @@ public class StudioForm extends javax.swing.JFrame {
     
     private void clearForm(){
         selectedId = -1;
-        jTextFieldStudioName.setText("");
-        jTextField1.setText("");
-        jLabelCapacity.setText("60 Seats");
-        jTableStudio.clearSelection();
+        jTextFieldTitleMovie.setText("");
+        jComboBoxGenre.setSelectedIndex(0);
+        jTextFieldDuration.setText("");
+        jComboBoxRating.setSelectedIndex(0);
+        jTableMovie.clearSelection();
         jButtonSave.setText("Save");
     }
     
     private void fillForm(){
-        int row = jTableStudio.getSelectedRow();
+        int row = jTableMovie.getSelectedRow();
         if(row == -1) return;
         selectedId = Integer.parseInt(
-                jTableStudio.getValueAt(row,0).toString());
-        jTextFieldStudioName.setText(
-                jTableStudio.getValueAt(row,1).toString());
-        jLabelCapacity.setText(
-                jTableStudio.getValueAt(row,2).toString());
-        jTextField1.setText(
-                jTableStudio.getValueAt(row,3).toString());
+                jTableMovie.getValueAt(row,0).toString());
+        jTextFieldTitleMovie.setText(
+                jTableMovie.getValueAt(row,1).toString());
+        jComboBoxGenre.setSelectedItem(
+                jTableMovie.getValueAt(row,2).toString());
+        jTextFieldDuration.setText(
+                jTableMovie.getValueAt(row,3).toString());
+        jComboBoxRating.setSelectedItem(
+                jTableMovie.getValueAt(row,4).toString());
         jButtonSave.setText("Update");
-
     }
 
     /**
@@ -102,19 +105,21 @@ public class StudioForm extends javax.swing.JFrame {
         jPanelContent = new javax.swing.JPanel();
         jPanelInput = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextFieldStudioName = new javax.swing.JTextField();
+        jTextFieldTitleMovie = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jLabelCapacity = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldDuration = new javax.swing.JTextField();
         jButtonSave = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
         jButtonClear = new javax.swing.JButton();
         jButtonBack = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jComboBoxRating = new javax.swing.JComboBox<>();
+        jComboBoxGenre = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableStudio = new javax.swing.JTable();
-        jTextField2 = new javax.swing.JTextField();
+        jTableMovie = new javax.swing.JTable();
+        jTextFieldSearch = new javax.swing.JTextField();
         jButtonSearch = new javax.swing.JButton();
         jButtonPrev = new javax.swing.JButton();
         jButtonNext = new javax.swing.JButton();
@@ -130,10 +135,10 @@ public class StudioForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText(" Studio Management");
+        jLabel1.setText(" Movie Management");
         jLabel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 5, 0, 0, new java.awt.Color(255, 0, 51)));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/clapperboard.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/video-player (1).png"))); // NOI18N
 
         javax.swing.GroupLayout jPanelHeaderLayout = new javax.swing.GroupLayout(jPanelHeader);
         jPanelHeader.setLayout(jPanelHeaderLayout);
@@ -144,7 +149,7 @@ public class StudioForm extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
-                .addContainerGap(1227, Short.MAX_VALUE))
+                .addContainerGap(1223, Short.MAX_VALUE))
         );
         jPanelHeaderLayout.setVerticalGroup(
             jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,19 +171,15 @@ public class StudioForm extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Studio Name");
+        jLabel4.setText("Title Movie");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Capacity");
-
-        jLabelCapacity.setBackground(new java.awt.Color(255, 255, 255));
-        jLabelCapacity.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabelCapacity.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Genre");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Ticket Price");
+        jLabel6.setText("Duration");
 
         jButtonSave.setBackground(new java.awt.Color(255, 0, 51));
         jButtonSave.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -203,6 +204,14 @@ public class StudioForm extends javax.swing.JFrame {
         jButtonBack.setForeground(new java.awt.Color(255, 255, 255));
         jButtonBack.setText("Back");
 
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Rating");
+
+        jComboBoxRating.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SU", "13+", "17+", "21+" }));
+
+        jComboBoxGenre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Action", "Adventure", "Animation", "Comedy", "Drama", "Fantasy", "Horror", "Romance", "Sci-Fi", "Thriller" }));
+
         javax.swing.GroupLayout jPanelInputLayout = new javax.swing.GroupLayout(jPanelInput);
         jPanelInput.setLayout(jPanelInputLayout);
         jPanelInputLayout.setHorizontalGroup(
@@ -216,8 +225,8 @@ public class StudioForm extends javax.swing.JFrame {
                             .addComponent(jLabel5))
                         .addGap(18, 18, 18)
                         .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldStudioName)
-                            .addComponent(jLabelCapacity, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldTitleMovie, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+                            .addComponent(jComboBoxGenre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(258, 258, 258))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInputLayout.createSequentialGroup()
                         .addComponent(jButtonBack, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -228,13 +237,17 @@ public class StudioForm extends javax.swing.JFrame {
                         .addGap(22, 22, 22)))
                 .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelInputLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelInputLayout.createSequentialGroup()
                         .addGap(35, 35, 35)
-                        .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(193, Short.MAX_VALUE))
+                        .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelInputLayout.createSequentialGroup()
+                        .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldDuration, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                            .addComponent(jComboBoxRating, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(222, Short.MAX_VALUE))
         );
         jPanelInputLayout.setVerticalGroup(
             jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,13 +255,15 @@ public class StudioForm extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextFieldStudioName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldTitleMovie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldDuration, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelCapacity, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)
+                    .addComponent(jComboBoxRating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonBack)
@@ -263,18 +278,18 @@ public class StudioForm extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(30, 30, 30));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(60, 60, 60)));
 
-        jTableStudio.setModel(new javax.swing.table.DefaultTableModel(
+        jTableMovie.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Studio ID", "Studio Name", "Capacity", "Ticket Price"
+                "Movie ID", "Movie Title", "Genre", "Duration", "Rating"
             }
         ));
-        jScrollPane1.setViewportView(jTableStudio);
+        jScrollPane1.setViewportView(jTableMovie);
 
-        jTextField2.setText("Searching");
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+        jTextFieldSearch.setText("Searching");
+        jTextFieldSearch.addActionListener(this::jTextFieldSearchActionPerformed);
 
         jButtonSearch.setBackground(new java.awt.Color(255, 0, 51));
         jButtonSearch.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -302,7 +317,7 @@ public class StudioForm extends javax.swing.JFrame {
                 .addGap(0, 35, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -318,7 +333,7 @@ public class StudioForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -338,31 +353,35 @@ public class StudioForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_jTextFieldSearchActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
-        try {
-            Studio studio = new Studio();
-            studio.setStudioName(jTextFieldStudioName.getText());
-            studio.setCapacity(60);
-            studio.setTicketPrice(Double.parseDouble(jTextField1.getText()));
+        try{
+            Movie movie = new Movie();
+            movie.setTitle(jTextFieldTitleMovie.getText());
+            movie.setGenre(
+                    jComboBoxGenre.getSelectedItem().toString());
+            movie.setDuration(
+                    Integer.parseInt(jTextFieldDuration.getText()));
+            movie.setRating(
+                    jComboBoxRating.getSelectedItem().toString());
             if(selectedId == -1){
-                controller.insert(studio);
+                controller.insert(movie);
                 JOptionPane.showMessageDialog(this,
-                        "Studio added successfully!");
+                        "Movie added successfully!");
             }else{
-                studio.setStudioID(selectedId);
-                controller.update(studio);
+                movie.setMovieID(selectedId);
+                controller.update(movie);
                 JOptionPane.showMessageDialog(this,
-                        "Studio updated successfully!");
+                        "Movie updated successfully!");
             }
             clearForm();
             loadTable();
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(this,
-                    "Ticket price must be a number!");
+                    "Duration must be a number!");
         }catch(Exception e){
             JOptionPane.showMessageDialog(this,
                     e.getMessage());
@@ -372,18 +391,13 @@ public class StudioForm extends javax.swing.JFrame {
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
         try{
             controller.delete(selectedId);
-
             JOptionPane.showMessageDialog(this,
-                    "Studio deleted successfully!");
-
+                    "Movie deleted successfully!");
             clearForm();
             loadTable();
-
         }catch(Exception e){
-
             JOptionPane.showMessageDialog(this,
                     e.getMessage());
-
         }
 
     }//GEN-LAST:event_jButtonDeleteActionPerformed
@@ -394,24 +408,25 @@ public class StudioForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
-        String keyword = jTextField2.getText().trim();
-        DefaultTableModel model = (DefaultTableModel) jTableStudio.getModel();
+        String keyword = jTextFieldSearch.getText().trim();
+        DefaultTableModel model = (DefaultTableModel) jTableMovie.getModel();
         model.setRowCount(0);
-        ArrayList<Studio> list;
+        ArrayList<Movie> movies;
         if(keyword.isEmpty()){
-            list = controller.getAll();
+            movies = controller.getAll();
         }else{
-            list = controller.search(keyword);
+            movies = controller.search(keyword);
         }
-        for(Studio studio : list){
+        for(Movie movie : movies){
             model.addRow(new Object[]{
-                studio.getStudioID(),
-                studio.getStudioName(),
-                studio.getCapacity(),
-                studio.getTicketPrice()
+                movie.getMovieID(),
+                movie.getTitle(),
+                movie.getGenre(),
+                movie.getDuration(),
+                movie.getRating()
             });
         }
-        jTableStudio.setModel(model);
+        jTableMovie.setModel(model);
     }//GEN-LAST:event_jButtonSearchActionPerformed
 
     private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextActionPerformed
@@ -421,7 +436,6 @@ public class StudioForm extends javax.swing.JFrame {
             if(currentPage < totalPage){
                 currentPage++;
                 loadTable();
-
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(this,e.getMessage());
@@ -430,10 +444,9 @@ public class StudioForm extends javax.swing.JFrame {
 
     private void jButtonPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrevActionPerformed
         if(currentPage > 1){
-        currentPage--;
-        loadTable();
-
-    }
+            currentPage--;
+            loadTable();
+        }
     }//GEN-LAST:event_jButtonPrevActionPerformed
 
     /**
@@ -458,7 +471,7 @@ public class StudioForm extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new StudioForm().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new MovieForm().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -469,21 +482,23 @@ public class StudioForm extends javax.swing.JFrame {
     private javax.swing.JButton jButtonPrev;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonSearch;
+    private javax.swing.JComboBox<String> jComboBoxGenre;
+    private javax.swing.JComboBox<String> jComboBoxRating;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabelCapacity;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelBackground;
     private javax.swing.JPanel jPanelContent;
     private javax.swing.JPanel jPanelHeader;
     private javax.swing.JPanel jPanelInput;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTableStudio;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextFieldStudioName;
+    private javax.swing.JTable jTableMovie;
+    private javax.swing.JTextField jTextFieldDuration;
+    private javax.swing.JTextField jTextFieldSearch;
+    private javax.swing.JTextField jTextFieldTitleMovie;
     // End of variables declaration//GEN-END:variables
 }

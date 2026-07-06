@@ -4,7 +4,7 @@
  */
 package view;
 
-import controller.StudioController;
+import controller.CustomerController;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,7 +18,7 @@ import model.Customer;
 public class CustomerForm extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CustomerForm.class.getName());
-    private StudioController controller;
+   private CustomerController controller;
     private int selectedId = -1;
     private int currentPage = 1;
     private final int recordsPerPage = 10;
@@ -28,9 +28,7 @@ public class CustomerForm extends javax.swing.JFrame {
     public CustomerForm() {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-         controller = new StudioController();
-
-        jLabelCapacity.setText("60 Seats");
+        controller = new CustomerController();
         loadTable();
         jTableCustomer.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -40,25 +38,22 @@ public class CustomerForm extends javax.swing.JFrame {
     }
     
     private void loadTable() {
-         try{
-            DefaultTableModel model = new DefaultTableModel();
-            model.addColumn("Studio ID");
-            model.addColumn("Studio Name");
-            model.addColumn("Capacity");
-            model.addColumn("Ticket Price");
-            ArrayList<Studio> list =
-                    controller.pagination(currentPage, recordsPerPage);
-            for(Studio studio : list){
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTableCustomer.getModel();
+            model.setRowCount(0);
+            ArrayList<Customer> list = controller.pagination(currentPage, recordsPerPage);
+            for (Customer customer : list) {
                 model.addRow(new Object[]{
-                    studio.getStudioID(),
-                    studio.getStudioName(),
-                    studio.getCapacity(),
-                    studio.getTicketPrice()
+                    customer.getCustomerID(),
+                    customer.getName(),
+                    customer.getPhone(),
+                    customer.getMembership()
                 });
             }
             jTableCustomer.setModel(model);
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(this,e.getMessage());
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }
     
@@ -72,25 +67,25 @@ public class CustomerForm extends javax.swing.JFrame {
     private void clearForm(){
         selectedId = -1;
         jTextFieldCustomerName.setText("");
-        jTextField1.setText("");
-        jLabelCapacity.setText("60 Seats");
+        jTextFieldPhoneNumber.setText("");
+        jComboBoxMembership.setSelectedIndex(0);
         jTableCustomer.clearSelection();
         jButtonSave.setText("Save");
     }
     
     private void fillForm(){
         int row = jTableCustomer.getSelectedRow();
-        if(row == -1) return;
-        selectedId = Integer.parseInt(
-                jTableCustomer.getValueAt(row,0).toString());
+        if (row == -1) {
+            return;
+        }
+        selectedId = Integer.parseInt(jTableCustomer.getValueAt(row, 0).toString());
         jTextFieldCustomerName.setText(
-                jTableCustomer.getValueAt(row,1).toString());
-        jLabelCapacity.setText(
-                jTableCustomer.getValueAt(row,2).toString());
-        jTextField1.setText(
-                jTableCustomer.getValueAt(row,3).toString());
+                jTableCustomer.getValueAt(row, 1).toString());
+        jTextFieldPhoneNumber.setText(
+                jTableCustomer.getValueAt(row, 2).toString());
+        jComboBoxMembership.setSelectedItem(
+                jTableCustomer.getValueAt(row, 3).toString());
         jButtonSave.setText("Update");
-
     }
 
     /**
@@ -121,7 +116,7 @@ public class CustomerForm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableCustomer = new javax.swing.JTable();
-        jTextField2 = new javax.swing.JTextField();
+        jTextFieldSearch = new javax.swing.JTextField();
         jButtonSearch = new javax.swing.JButton();
         jButtonPrev = new javax.swing.JButton();
         jButtonNext = new javax.swing.JButton();
@@ -206,7 +201,7 @@ public class CustomerForm extends javax.swing.JFrame {
         jButtonBack.setForeground(new java.awt.Color(255, 255, 255));
         jButtonBack.setText("Back");
 
-        jComboBoxMembership.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxMembership.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Reguler", "Member" }));
 
         javax.swing.GroupLayout jPanelInputLayout = new javax.swing.GroupLayout(jPanelInput);
         jPanelInput.setLayout(jPanelInputLayout);
@@ -235,11 +230,11 @@ public class CustomerForm extends javax.swing.JFrame {
                     .addGroup(jPanelInputLayout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBoxMembership, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jComboBoxMembership, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelInputLayout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(jButtonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(273, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
         jPanelInputLayout.setVerticalGroup(
             jPanelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -278,8 +273,8 @@ public class CustomerForm extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTableCustomer);
 
-        jTextField2.setText("Searching");
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+        jTextFieldSearch.setText("Searching");
+        jTextFieldSearch.addActionListener(this::jTextFieldSearchActionPerformed);
 
         jButtonSearch.setBackground(new java.awt.Color(255, 0, 51));
         jButtonSearch.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -307,7 +302,7 @@ public class CustomerForm extends javax.swing.JFrame {
                 .addGap(0, 35, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -323,7 +318,7 @@ public class CustomerForm extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -343,54 +338,54 @@ public class CustomerForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void jTextFieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_jTextFieldSearchActionPerformed
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
         try {
-            Studio studio = new Studio();
-            studio.setStudioName(jTextFieldCustomerName.getText());
-            studio.setCapacity(60);
-            studio.setTicketPrice(Double.parseDouble(jTextField1.getText()));
-            if(selectedId == -1){
-                controller.insert(studio);
-                JOptionPane.showMessageDialog(this,
-                        "Studio added successfully!");
-            }else{
-                studio.setStudioID(selectedId);
-                controller.update(studio);
-                JOptionPane.showMessageDialog(this,
-                        "Studio updated successfully!");
+
+            Customer customer = new Customer();
+            customer.setName(jTextFieldCustomerName.getText());
+            customer.setPhone(jTextFieldPhoneNumber.getText());
+            customer.setMembership(jComboBoxMembership.getSelectedItem().toString());
+            if (selectedId == -1) {
+                controller.insert(customer);
+                JOptionPane.showMessageDialog(this, "Customer added successfully!");
+            } else {
+                customer.setCustomerID(selectedId);
+                controller.update(customer);
+                JOptionPane.showMessageDialog(this, "Customer updated successfully!");
+
             }
             clearForm();
             loadTable();
-        }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(this,
-                    "Ticket price must be a number!");
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
+
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        try{
-            controller.delete(selectedId);
-
-            JOptionPane.showMessageDialog(this,
-                    "Studio deleted successfully!");
-
-            clearForm();
-            loadTable();
-
-        }catch(Exception e){
-
-            JOptionPane.showMessageDialog(this,
-                    e.getMessage());
-
+        if (selectedId == -1) {
+            JOptionPane.showMessageDialog(this, "Please select customer first!");
+            return;
         }
-
+        int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "Delete this customer?",
+                "Confirmation",
+                JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                controller.delete(selectedId);
+                JOptionPane.showMessageDialog(this, "Customer deleted successfully!");
+                clearForm();
+                loadTable();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
@@ -399,35 +394,17 @@ public class CustomerForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
-        String keyword = jTextField2.getText().trim();
-
-        DefaultTableModel model = new DefaultTableModel();
-
-        model.addColumn("Studio ID");
-        model.addColumn("Studio Name");
-        model.addColumn("Capacity");
-        model.addColumn("Ticket Price");
-
-        ArrayList<Studio> list;
-
-        if(keyword.isEmpty()){
-            list = controller.getAll();
-        }else{
-            list = controller.search(keyword);
-        }
-
-        for(Studio studio : list){
-
+        DefaultTableModel model = (DefaultTableModel) jTableCustomer.getModel();
+        model.setRowCount(0);
+        ArrayList<Customer> list = controller.search(jTextFieldSearch.getText());
+        for (Customer customer : list) {
             model.addRow(new Object[]{
-                studio.getStudioID(),
-                studio.getStudioName(),
-                studio.getCapacity(),
-                studio.getTicketPrice()
+                customer.getCustomerID(),
+                customer.getName(),
+                customer.getPhone(),
+                customer.getMembership()
             });
-
         }
-
-        jTableCustomer.setModel(model);
     }//GEN-LAST:event_jButtonSearchActionPerformed
 
     private void jButtonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNextActionPerformed
@@ -498,8 +475,8 @@ public class CustomerForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelInput;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableCustomer;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextFieldCustomerName;
     private javax.swing.JTextField jTextFieldPhoneNumber;
+    private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
 }

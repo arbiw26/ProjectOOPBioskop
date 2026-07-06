@@ -26,7 +26,7 @@ public class MovieController {
         }
 
         if (movie.getGenre().trim().isEmpty()) {
-            throw new Exception("Please input genre!");
+            throw new Exception("Please select genre!");
         }
 
         if (movie.getDuration() <= 0) {

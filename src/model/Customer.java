@@ -11,6 +11,7 @@ package model;
 public class Customer extends Person {
     private int customerID;
     private String membership;
+    
 
     public Customer() {
     }
@@ -36,5 +37,9 @@ public class Customer extends Person {
     public void setMembership(String membership) {
         this.membership = membership;
     }
-
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 }

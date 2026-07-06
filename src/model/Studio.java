@@ -55,4 +55,9 @@ public class Studio {
     public void setTicketPrice(double ticketPrice) {
         this.ticketPrice = ticketPrice;
     }
+    
+    @Override
+    public String toString() {
+        return studioName;
+    }
 }

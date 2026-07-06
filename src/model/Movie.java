@@ -65,4 +65,9 @@ public class Movie {
     public void setRating(String rating) {
         this.rating = rating;
     }
+    
+    @Override
+    public String toString() {
+        return title;
+    }
 }

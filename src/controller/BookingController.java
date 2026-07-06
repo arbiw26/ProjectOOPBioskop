@@ -141,13 +141,10 @@ public class BookingController {
     }
     
     public ArrayList<String> getBookedSeats(int studioID,
-                                        java.sql.Date bookingDate,
-                                        java.sql.Time showTime) {
+        java.sql.Date bookingDate,
+        java.sql.Time showTime) throws Exception {
 
-        return bookingDAO.getBookedSeats(
-                studioID,
-                bookingDate,
-                showTime
-        );
+        return bookingDAO.getBookedSeats(studioID, bookingDate, showTime);
+
     }
 }
