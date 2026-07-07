@@ -22,7 +22,7 @@ public class MovieForm extends javax.swing.JFrame {
     private MovieController controller;
     private int selectedId = -1;
     private int currentPage = 1;
-    private final int recordsPerPage = 10;
+    private final int recordsPerPage = 5;
     private User user;
     /**
      * Creates new form StudioForm
