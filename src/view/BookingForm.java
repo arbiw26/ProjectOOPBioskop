@@ -35,7 +35,7 @@ public class BookingForm extends javax.swing.JFrame {
     private StudioController studioController;
     private int selectedId = -1;
     private int currentPage = 1;
-    private final int recordsPerPage = 10;
+    private final int recordsPerPage = 5;
     private String selectedSeat = "";
     private JButton selectedButton = null;
     private User user;
@@ -188,10 +188,11 @@ public class BookingForm extends javax.swing.JFrame {
                 JButton btnSeat = new JButton(seat);
                 if (bookedSeats.contains(seat)) {
                     btnSeat.setBackground(Color.RED);
-                    btnSeat.setEnabled(false);
+                    btnSeat.putClientProperty("booked", true);
                 } else {
                     btnSeat.setBackground(new Color(144, 238, 144));
-                }
+                    btnSeat.putClientProperty("booked", false);
+}
                 btnSeat.setFocusPainted(false);
                 btnSeat.addActionListener(e -> {
                     if (selectedButton != null) {
@@ -225,9 +226,9 @@ public class BookingForm extends javax.swing.JFrame {
         Studio studio = (Studio) jComboBoxStudio.getSelectedItem();
         Customer customer = (Customer) jComboBoxCustomer.getSelectedItem();
 
-        jLabelMovie.setText(movie == null ? "-" : movie.getTitle());
+        jLabelMovie.setText(movie == null ? "-" : movie.getTitle() + " (" + movie.getRating() + ")");
         jLabelStudio.setText(studio == null ? "-" : studio.getStudioName());
-        jLabelCustomer.setText(customer == null ? "-" : customer.getName());
+        jLabelCustomer.setText(customer == null ? "-" : customer.getName() + " (" + customer.getPhone()+ ")");
         jLabelSeat.setText(selectedSeat.isEmpty() ? "-" : selectedSeat);
 
         if (jDateChooser1.getDate() != null) {
@@ -252,12 +253,12 @@ public class BookingForm extends javax.swing.JFrame {
         }
 
         if (customer != null&& customer.getMembership().equalsIgnoreCase("Member")) {
-            total = price * 0.9;   // Diskon 10%
+            total = price * 0.9;
 
         }
 
         jLabelPrice.setText("Rp " + String.format("%,.0f", price));
-        jLabelTotal.setText("Rp " + String.format("%,.0f", total));
+        jLabelTotal.setText("Rp " + String.format("%,.0f", total) + " (" + customer.getMembership() + ")");
     }
     /**
      * This method is called from within the constructor to initialize the form.
